@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"rest-collection-gin/logging"
 
 	"github.com/gin-gonic/gin"
 	"github.com/jackc/pgx/v5/pgxpool"
@@ -28,7 +29,7 @@ func InjectDB(dbpool *pgxpool.Pool) gin.HandlerFunc {
 }
 func SetupTablesIfNotExist() *pgxpool.Pool {
 	DB_URL := GoDotEnvVariable("DB_URL")
-	fmt.Printf("godotenv : %s = %s \n", "DB URL", DB_URL)
+	logging.Logger.Info("godotenv : %s = %s \n", "DB URL", DB_URL)
 	dbpool, err := pgxpool.New(context.Background(), DB_URL)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Unable to create connection pool: %v\n", err)

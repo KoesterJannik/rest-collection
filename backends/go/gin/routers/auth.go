@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"os"
 	"rest-collection-gin/database"
+	"rest-collection-gin/logging"
 	"strconv"
 	"strings"
 	"time"
@@ -24,7 +25,7 @@ func hashPassword(password string) (string, error) {
 	// Generate a salt for the password hash
 	hash, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
 	if err != nil {
-		fmt.Println("Error generating hash from password:", err)
+		logging.Logger.Info("Error generating hash from password:", err)
 		return "", err
 	}
 
@@ -35,7 +36,7 @@ func verifyPassword(hashedPassword string, plainPwd string) bool {
 	byteHash := []byte(hashedPassword)
 	err := bcrypt.CompareHashAndPassword(byteHash, []byte(plainPwd))
 	if err != nil {
-		fmt.Println("Error comparing hash and password:", err)
+		logging.Logger.Info("Error comparing hash and password:", err)
 		return false
 	}
 	return true
@@ -51,7 +52,7 @@ func createToken(userId int) (string, error) {
 	jwtDuration, err := strconv.Atoi(jwtDurationStr)
 	if err != nil {
 		// Handle the error if the conversion fails
-		fmt.Println("Error converting JWT duration to int:", err)
+		logging.Logger.Info("Error converting JWT duration to int:", err)
 		os.Exit(1)
 	}
 	jwtDurationDuration := time.Duration(jwtDuration) * time.Hour
@@ -107,6 +108,8 @@ func authMiddleware() gin.HandlerFunc {
 func SetupRouter(dbpool *pgxpool.Pool) *gin.Engine {
 	router := gin.Default()
 	router.Use(database.InjectDB(dbpool))
+	logging.Logger.Info("Auth Route")
+
 	router.POST("/auth/register", func(c *gin.Context) {
 		var payload RegisterPayload
 		err := c.BindJSON(&payload)
