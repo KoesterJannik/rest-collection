@@ -7,7 +7,6 @@ Things each implemenations includes:
 - protected endpoint to get user details /api/auth/me
 - environment variables for configuration
 - dockerfile for containerization
-- logger for logging
 - postgres as database(no orm because someone has to learn the specific orm first)
 
 
