@@ -169,6 +169,19 @@ func SetupRouter(dbpool *pgxpool.Pool) *gin.Engine {
 
 		c.JSON(http.StatusOK, gin.H{"user": fullUser})
 	})
+	router.GET("/auth/verify", authMiddleware(), func(c *gin.Context) {
+
+		c.JSON(http.StatusOK, gin.H{"message": "Valid Token"})
+	})
+	router.GET("/auth/refresh", authMiddleware(), func(c *gin.Context) {
+		userId := c.GetInt("userId")
+		jwtToken, err := createToken(userId)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			return
+		}
+		c.JSON(http.StatusOK, gin.H{"token": jwtToken})
+	})
 
 	return router
 }
