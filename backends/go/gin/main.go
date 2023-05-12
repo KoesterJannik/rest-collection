@@ -6,7 +6,6 @@ import (
 	"rest-collection-gin/logging"
 	"rest-collection-gin/routers"
 
-	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
 )
@@ -18,7 +17,7 @@ func main() {
 	logging.Logger.Debug("dbpool: ", dbpool)
 
 	r := routers.SetupRouter(dbpool)
-	r.Use(cors.Default())
+
 	r.Use(func(c *gin.Context) {
 		c.Set("dbpool", dbpool)
 		c.Next()
