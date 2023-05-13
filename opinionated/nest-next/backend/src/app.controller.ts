@@ -13,7 +13,7 @@ export class AppController {
   @Public()
   @UseGuards(LocalAuthGuard)
   @Post('auth/login')
-  async login(@Request() req) {
+  async login(@Request() req, @Body() createUserDto: CreateUserDto) {
     return this.authService.login(req.user);
   }
   @Public()
