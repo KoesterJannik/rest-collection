@@ -1,5 +1,5 @@
 import { HttpStatus, Injectable } from '@nestjs/common';
-import { UsersService } from '../users/users.service';
+
 import { JwtService } from '@nestjs/jwt';
 import { PrismaService } from 'src/services/prisma.service';
 import { Prisma } from '@prisma/client';
@@ -9,7 +9,6 @@ import { ConfigService } from '@nestjs/config';
 @Injectable()
 export class AuthService {
   constructor(
-    private usersService: UsersService,
     private jwtService: JwtService,
     private prisma: PrismaService,
     private configService: ConfigService,
