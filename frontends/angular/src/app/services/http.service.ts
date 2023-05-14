@@ -28,15 +28,15 @@ export class HttpService {
     );
     this.loggedInUser$ = this.loggedInUserSubject.asObservable();
     if (localStorage.getItem('token')) {
+      console.log('Get user details');
       this.getUserDetails();
     }
   }
 
   logoutUser(): void {
     localStorage.removeItem('token');
-    localStorage.removeItem('user');
     this.loggedInUserSubject.next(null);
-    this.router.navigate(['/login']);
+    this.router.navigate(['/']);
   }
 
   registerUser({ email, password }: RegisterUser): Observable<any> {
@@ -75,15 +75,15 @@ export class HttpService {
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
     try {
       this.http
-        .get(`${BACKEND_URL}/auth/me`, {
+        .get(`${BACKEND_URL}/users/me`, {
           headers: headers,
         })
         .pipe(catchError(this.handleError))
         .subscribe((data: any) => {
           console.log('getuserdetails', data);
-          this.loggedInUserSubject.next(data.user as RegisterUser);
+          this.loggedInUserSubject.next(data as RegisterUser);
           //@ts-ignore
-          localStorage.setItem('user', JSON.stringify(data.user));
+          localStorage.setItem('user', JSON.stringify(data));
           const savedUser = localStorage.getItem('user')
             ? JSON.parse(localStorage.getItem('user')!)
             : null;

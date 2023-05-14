@@ -21,8 +21,7 @@ export class LoginComponent {
     this.httpService.loginUser(this.registerUser).subscribe(
       (response: any) => {
         console.log('Registration successful:', response);
-        localStorage.setItem('token', response.token);
-        localStorage.setItem('user', JSON.stringify(response.user.user));
+        localStorage.setItem('token', response.access_token);
         // Navigate to a different page if necessary
         this.router.navigate(['/dashboard']);
       },

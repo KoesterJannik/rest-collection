@@ -23,7 +23,7 @@ export class RegisterComponent {
     this.httpService.registerUser(this.registerUser).subscribe(
       (response: any) => {
         console.log('Registration successful:', response);
-        localStorage.setItem('token', response.token);
+        localStorage.setItem('token', response.access_token);
         console.log(response.user);
         localStorage.setItem('user', JSON.stringify(response.user));
         // Navigate to a different page if necessary

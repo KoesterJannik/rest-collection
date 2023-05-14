@@ -13,9 +13,14 @@ export class DashboardComponent {
 
   constructor(private httpService: HttpService, public Router: Router) {}
   ngOnInit(): void {
+    this.httpService.getUserDetails();
     this.httpService.loggedInUser$.subscribe((user: any) => {
       console.log(user);
       this.loggedInUser = user;
     });
+  }
+
+  logout(): void {
+    this.httpService.logoutUser();
   }
 }
