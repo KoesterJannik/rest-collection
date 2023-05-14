@@ -6,6 +6,7 @@ import { UsersModule } from './users/users.module';
 import { PrismaService } from './services/prisma.service';
 import { ConfigModule } from '@nestjs/config';
 import { HealthModule } from './health/health.module';
+import { MailerModule } from './mailer/mailer.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { HealthModule } from './health/health.module';
     AuthModule,
     UsersModule,
     HealthModule,
+    MailerModule,
   ],
   controllers: [AppController],
   providers: [AppService, PrismaService],

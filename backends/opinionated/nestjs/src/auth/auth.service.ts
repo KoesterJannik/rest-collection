@@ -6,12 +6,14 @@ import { Prisma } from '@prisma/client';
 
 import * as bcrypt from 'bcrypt';
 import { ConfigService } from '@nestjs/config';
+import { MailerService } from 'src/mailer/mailer.service';
 @Injectable()
 export class AuthService {
   constructor(
     private jwtService: JwtService,
     private prisma: PrismaService,
     private configService: ConfigService,
+    private mailerService: MailerService,
   ) {}
 
   async validateUser(email: string, pass: string): Promise<any> {
@@ -70,6 +72,16 @@ export class AuthService {
         password: hashedPassword,
       },
     });
+    try {
+      this.mailerService.sendEmail(
+        user.email,
+        'Welcome to the app',
+        'Welcome to the app',
+      );
+      console.log('email send');
+    } catch (error) {
+      console.log(error);
+    }
     return this.login(user);
   }
 }
