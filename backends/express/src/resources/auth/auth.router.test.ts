@@ -18,6 +18,11 @@ describe("Auth Router tests", () => {
     });
   });
 
+  afterAll(async () => {
+    await prisma.user.deleteMany();
+    await prisma.$disconnect();
+  });
+
   it("Logs in with correct data", async () => {
     const res = await supertest(app).post("/api/v1/auth/login").send({
       email: randomEmail,
@@ -79,10 +84,5 @@ describe("Auth Router tests", () => {
     });
 
     expect(res.statusCode).toBe(400);
-  });
-
-  afterAll(async () => {
-    await prisma.user.deleteMany();
-    await prisma.$disconnect();
   });
 });

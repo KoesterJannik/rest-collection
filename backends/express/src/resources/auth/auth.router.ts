@@ -6,7 +6,7 @@ import {
   hashPassword,
   verifyPassword,
 } from "../../utils/auth";
-import { z } from "zod";
+
 import { tryCatchZodErrorWrapper } from "../helper";
 
 const authRouter = express.Router();
