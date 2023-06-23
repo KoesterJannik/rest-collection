@@ -7,6 +7,9 @@ import { hashPassword } from "../../utils/auth";
 describe("Auth Router tests", () => {
   const randomEmail = generateRandomString(10) + "@gmail.com";
   const randomPassword = generateRandomString(10);
+  let apiUserEmail: string;
+  let apiUserPassword: string;
+  let jwt: string;
 
   beforeAll(async () => {
     const hashedPw = await hashPassword(randomPassword);
@@ -30,6 +33,7 @@ describe("Auth Router tests", () => {
     });
 
     expect(res.body.jwt).toBeDefined();
+    jwt = res.body.jwt;
   });
   it("Logs in with wrong password", async () => {
     const res = await supertest(app).post("/api/v1/auth/login").send({
@@ -56,12 +60,12 @@ describe("Auth Router tests", () => {
     expect(res.statusCode).toBe(400);
   });
   it("Registers a new user", async () => {
-    const randomEmail = generateRandomString(10) + "@gmail.com";
-    const randomPassword = generateRandomString(10);
+    apiUserEmail = generateRandomString(10) + "@gmail.com";
+    apiUserPassword = generateRandomString(10);
 
     const res = await supertest(app).post("/api/v1/auth/register").send({
-      email: randomEmail,
-      password: randomPassword,
+      email: apiUserEmail,
+      password: apiUserPassword,
     });
 
     expect(res.statusCode).toBe(201);
@@ -71,8 +75,8 @@ describe("Auth Router tests", () => {
   it("Returns 400 if user already exists", async () => {
     // Assuming `randomEmail` and `randomPassword` from the previous test
     const res = await supertest(app).post("/api/v1/auth/register").send({
-      email: randomEmail,
-      password: randomPassword,
+      email: apiUserEmail,
+      password: apiUserPassword,
     });
 
     expect(res.statusCode).toBe(400);
@@ -80,7 +84,7 @@ describe("Auth Router tests", () => {
   });
   it("Returns 400 if data is missing", async () => {
     const res = await supertest(app).post("/api/v1/auth/register").send({
-      email: randomEmail,
+      email: apiUserEmail,
     });
 
     expect(res.statusCode).toBe(400);

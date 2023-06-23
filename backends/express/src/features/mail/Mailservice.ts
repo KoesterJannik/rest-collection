@@ -1,6 +1,14 @@
 import * as nodemailer from "nodemailer";
 import * as handlebars from "handlebars";
 import * as fs from "fs";
+import * as path from "path";
+
+type SendMailWithTemplate = {
+  to: string[];
+  subject: string;
+  templateName: string;
+  templateData: any;
+};
 class MailerService {
   private transporter;
 
@@ -17,11 +25,18 @@ class MailerService {
     });
   }
 
-  async sendEmail(to: string, subject: string, html: string): Promise<void> {
+  async sendEmail(data: SendMailWithTemplate): Promise<void> {
+    const templatePath = path.join(__dirname, "templates", data.templateName);
+    console.log(templatePath);
+    const template = fs.readFileSync(templatePath, "utf8");
+
+    const compiledTemplate = handlebars.compile(template);
+    const html = compiledTemplate(data.templateData);
+
     const mailOptions = {
       from: process.env.MAIL_SENDER,
-      to,
-      subject,
+      to: data.to,
+      subject: data.subject,
       html,
     };
 

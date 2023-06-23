@@ -1,4 +1,5 @@
 import bcrypt from "bcrypt";
+import { Request } from "express";
 import jwt from "jsonwebtoken";
 
 export const hashPassword = async (password: string) => {
@@ -31,4 +32,11 @@ export const verifyAccessToken = (token: string) => {
   const SECRET = process.env.JWT_SECRET;
   if (!SECRET) throw new Error("SECRET is not defined");
   return jwt.verify(token, SECRET) as AccessTokenPayload;
+};
+
+export const getJwtFromRequest = (req: Request) => {
+  const authorization = req.headers.authorization;
+  if (!authorization) return null;
+  const token = authorization.split(" ")[1];
+  return token;
 };
