@@ -16,10 +16,12 @@
   "license": "ISC",
   "dependencies": {
     "@prisma/client": "^4.16.1",
+    "@types/handlebars": "^4.1.0",
     "bcrypt": "^5.1.0",
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
+    "handlebars": "^4.7.7",
     "jsonwebtoken": "^9.0.0",
     "nodemailer": "^6.9.3"
   },
